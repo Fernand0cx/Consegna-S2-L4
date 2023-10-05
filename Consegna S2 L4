@@ -1,0 +1,128 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void generaDomandaCasuale(int *primoValore, int *secondoValore, int *rispostaCorretta) 
+{
+    *primoValore = 1 + (rand() % 10);
+    *secondoValore = 1 + (rand() % 10);
+    *rispostaCorretta = (*primoValore) * (*secondoValore);
+}
+
+void generaRisposteCasuali(int rispostaCorretta, int *rispostaSbagliata1, int *rispostaSbagliata2) 
+{
+    do {
+        *rispostaSbagliata1 = 1 + (rand() % 100);
+    } while (*rispostaSbagliata1 == rispostaCorretta);
+
+    do {
+        *rispostaSbagliata2 = 1 + (rand() % 100);
+    } while (*rispostaSbagliata2 == rispostaCorretta || *rispostaSbagliata2 == *rispostaSbagliata1);
+}
+
+void generaCasiRisposta(int rispostaCorretta, int rispostaSbagliata1, int rispostaSbagliata2, int primoValore, int secondoValore, int *punteggio)
+{
+	int rispostaUtente;
+	int casoRisposta = 1 + (rand() % 3);
+		 
+		    if( casoRisposta == 1 )
+		    {
+			    printf ("Quanto fa %d * %d ?\n", primoValore, secondoValore);
+		        printf ("1) %d\n2) %d\n3) %d\n", rispostaCorretta, rispostaSbagliata1, rispostaSbagliata2);
+		        scanf ("%d", &rispostaUtente);
+		        if(rispostaUtente == 1)
+		        {
+		    	    printf ("Risposta corretta!\n");
+		    	    (*punteggio)++;
+			    }
+			    else
+			    {
+				    printf ("Risposta errata!\n");
+			    }
+		    }
+		
+	    	if( casoRisposta == 2 )
+		    {
+			    printf ("Quanto fa %d * %d ?\n", primoValore, secondoValore);
+		        printf ("1) %d\n2) %d\n3) %d\n", rispostaSbagliata1, rispostaCorretta, rispostaSbagliata2);
+		        scanf ("%d", &rispostaUtente);
+		        if(rispostaUtente == 2)
+		        {
+		    	    printf ("Risposta corretta!\n");
+		    	    (*punteggio)++;
+			    }
+			    else
+			    {
+				    printf ("Risposta errata!\n");
+			    }
+		    }
+		
+		    if( casoRisposta == 3 )
+		    {
+		    	printf ("Quanto fa %d * %d ?\n", primoValore, secondoValore);
+		        printf ("1) %d\n2) %d\n3) %d\n", rispostaSbagliata1, rispostaSbagliata2, rispostaCorretta);
+		        scanf ("%d", &rispostaUtente);
+		        if(rispostaUtente == 3)
+		        {
+		    	    printf ("Risposta corretta!\n");
+		    	    (*punteggio)++;
+			    }
+			    else
+			    {
+				    printf ("Risposta errata!\n");
+			    }
+		    }
+}
+
+int main()
+{
+	srand(time(NULL));
+	
+	printf ("Questo programma verifica la tua competenza sulle tabelline, presenta una serie di domande a risposta multipla e salva il punteggio totale.\n");
+	
+	int newGame = 1;
+	char inizioPartita;
+	char nomeUtente[20];
+	int primoValore, secondoValore;
+	int rispostaCorretta;
+	int rispostaSbagliata1, rispostaSbagliata2;
+	int casoRisposta;
+	int rispostaUtente;
+	int punteggio=0;
+
+	printf("Digitare A) Iniziare una nuova partita B) Uscire dal gioco\n");
+	scanf (" %c", &inizioPartita);
+	
+	if(inizioPartita == 'A')
+	{
+	    while(1)
+	    {
+		    if( newGame == 1 )
+	        {
+	    	    newGame = 0;
+	    	    printf ("Inserire nome utente: \n");
+	    	    scanf ("%s", &nomeUtente);
+		    }
+		
+		    generaDomandaCasuale(&primoValore, &secondoValore, &rispostaCorretta);
+		
+		    generaRisposteCasuali(rispostaCorretta, &rispostaSbagliata1, &rispostaSbagliata2);
+		    
+		    generaCasiRisposta(rispostaCorretta, rispostaSbagliata1, rispostaSbagliata2, primoValore, secondoValore, &punteggio);
+		
+		    printf("%s Il tuo punteggio e': %d\n", nomeUtente, punteggio);
+		    
+	    	printf("Digitare A) Iniziare una nuova partita B) Uscire dal gioco\n");
+	        scanf (" %c", &inizioPartita);
+	        
+	        if (inizioPartita == 'B')
+	        {
+                break;
+            }  
+	    }
+    }
+	
+	printf("Il tuo punteggio finale e' %d gioco concluso", punteggio);
+	
+	return 0;
+}
